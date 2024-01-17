@@ -128,27 +128,31 @@ const Navbar = ({
     const signature = await signAccount();
     console.log("data", signature);
     try {
-      const response1 = await axios.post("http://localhost:8000/auth/login", {
+      const response = await axios.post("http://localhost:8000/auth/login", {
         walletAddress: address,
         signature: signature,
       });
-      const cookies = new Cookies();
-      // console.log("response1", response1);
-      cookies.set("access_token", response1.data.accessToken, { path: "/" });
-      cookies.set("refresh_token", response1.data.refreshToken, { path: "/" });
-      // localStorage.setItem('access_token', response1.data.accessToken);
-      // localStorage.setItem('refresh_token', response1.data.refreshToken);
-      // localStorage.setItem('login_id', response1.data._id);
-      setLoginCred(response1.data);
+      // Saving tokens in localStorage
+      localStorage.setItem("access_token", response.data.accessToken);
+      localStorage.setItem("refresh_token", response.data.refreshToken);
+      setLoginCred(response.data);
     } catch (error) {
-      // console.log(error);
+      console.error(error);
     }
   };
   const [connectText, setConnectText] = useState<string | null>(null);
   useEffect(() => {
     if (isConnected) {
       setConnectText(`${address}`);
-      handleLogin();
+      // Check if access_token is already present
+      const accessToken = localStorage.getItem("access_token");
+      if (!accessToken) {
+        handleLogin();
+      } else {
+        // Handle case if the token is already in localStorage
+        // e.g., set user login state based on token
+        // setLoginCred({ ... }); // Set appropriate login credentials
+      }
     } else {
       setConnectText("Connect Wallet");
     }

@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import cart from "../images/cart.png";
 import Image from "next/image";
 import NewProject from "./NewProject";
@@ -7,13 +7,39 @@ import GetApiKey from "./GetApiKey";
 import Integrate from "./Integrate";
 import PrimaryBtnComponent from "./buttons/PrimaryButton";
 import CustomModal from "./modal/modal";
+import axios from "axios";
 
 const MainPage: React.FC = () => {
   const [showNewProject, setShowNewProject] = useState(false);
   const [showProjectDetails, setShowProjectDetails] = useState(false);
   const [showAPIKey, setShowAPIKey] = useState(false);
   const [showIntegrate, setShowIntegrate] = useState(false);
-  const projects: any = [];
+  const [projects, setProjects] = useState([]);
+
+
+  const handleShowProjects = async () => {
+    try {
+      const accessToken = localStorage.getItem('access_token');
+      console.log("access-token:",accessToken)
+      const response = await axios.get(
+        "http://localhost:8000/minimarket/v1/fetch-all-projects",
+        {
+          headers: {
+            Authorization: `Bearer ${accessToken}`,
+          },
+        }
+      );
+      console.log(response.data);
+      setProjects(response.data.projects);
+    } catch (error) {
+      console.error("Error fetching projects", error);
+    }
+  };
+
+  useEffect(() => {
+    handleShowProjects();
+  }, []);
+
 
   return (
     <div className="w-full lg:w-3/4">
@@ -110,8 +136,7 @@ const MainPage: React.FC = () => {
                     className="font-normal shadow-btn-2 text-sm px-2 border"
                   />
                 </td>
-              </tr>
-              {/* )} */}
+              </tr> 
             </tbody>
           </table>
         </div>

@@ -28,7 +28,7 @@
     "next-env.d.ts",
     "**/*.ts",
     "**/*.tsx"
-  ],
+, "components/WalletAddressContext.js", "contexts/WalletAddressContext.js", "contexts/LoginContext.js"  ],
   "exclude": [
     "node_modules"
   ]
