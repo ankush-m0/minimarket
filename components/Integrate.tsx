@@ -4,8 +4,9 @@ import Logo2 from "../images/Logo2.png";
 import FilterOptions from "./FilterOptions";
 import Image from "next/image";
 import closeIcon from "../images/closeIcon.png";
+import CloseButton from "./buttons/CloseButton";
 
-const Integrate = ({ close }: any) => {
+const Integrate = ({ close }: { close: () => void }) => {
   const [showOrderDetails, setShowOrderDetails] = useState(false);
   const [showBrowseDetails, setShowBrowseDetails] = useState(false);
   const [showFilterOptions, setShowFilterOptions] = useState(false);
@@ -27,43 +28,38 @@ const Integrate = ({ close }: any) => {
   };
 
   return (
-    <div className="flex flex-col w-[70%] border-2 border-black p-8 h-[fit-content] text-black font-mono shadow-[rgba(0,0,0,1)_5px_5px_0px_1px] bg-white">
-      <button className="text-black place-self-end mb-4" onClick={close}>
-        <Image
-          width="40"
-          height="40"
-          src={closeIcon}
-          alt="cancel"
-          className="rounded-full border border-black shadow-[rgba(0,0,0,1)_1px_1px_0px_1px]"
-        />
-      </button>
-      <div className="flex flex-row justify-between">
-        <div className="flex flex-col w-[60%]">
-          <label>Step 1</label>
-          <p className="text-gray-500 my-4">
-            Enter your Token Address and Preferred Markup Language.
-          </p>
-          <div className="flex flex-row mb-10">
-            <input
-              placeholder="Enter Token Address"
-              className="text-sm border-2 border-black p-2 w-[40%]"
-            />
-            <select className="border-2 border-black ml-4 text-sm w-[40%]">
-              <option selected>Select Markup Language</option>
-              <option value="HTML">HTML</option>
-            </select>
+    <div className="flex flex-col mx-auto border-2 border-black p-8 h-fit text-black font-mono shadow-btn-6 bg-white">
+      <CloseButton close={close} />
+      <div className="grid gap-10 md:grid-cols-2 ">
+        <div className="grid grid-rows-2 gap-10">
+          <div className="w-full flex flex-col flex-wrap gap-3 ">
+            <label>Step 1</label>
+            <p className="text-gray-500 text-sm sm:text-base">
+              Enter your Token Address and Preferred Markup Language.
+            </p>
+            <div className="grid grid-cols-1 w-full flex-wrap gap-5 xs-m:grid-cols-2 ">
+              <input
+                placeholder="Enter Token Address"
+                className="text-sm border-2 border-black p-2 w-full"
+              />
+              <select defaultValue={""} className="border-2 border-black text-sm p-2 w-full">
+                <option value={""}>Select Markup Language</option>
+                <option value="HTML">HTML</option>
+              </select>
+            </div>
           </div>
-
-          <label>Step 2</label>
-          <p className="text-gray-500 my-4">
-            Copy the code and paste it in your Website.
-          </p>
-          <button className="w-[40%] text-black border-2 border-black bg-red-500 shadow-[rgba(0,0,0,1)_5px_5px_0px_1px] py-2">
-            Copy Code
-          </button>
+          <div className="flex flex-col gap-3">
+            <label>Step 2</label>
+            <p className="text-gray-500 text-sm sm:text-base">
+              Copy the code and paste it in your Website.
+            </p>
+            <button className="w-[40%] text-black border-2 border-black bg-red-500 shadow-[rgba(0,0,0,1)_5px_5px_0px_1px] py-2">
+              Copy Code
+            </button>
+          </div>
         </div>
 
-        <div className="flex flex-col border-2 border-black rounded-xl p-8 w-[40%]">
+        <div className="flex flex-col border-2 border-black rounded-xl p-8 ">
           <div className="flex flex-row justify-between mb-4">
             <div className="flex flex-row">
               <Image
@@ -241,12 +237,12 @@ const Integrate = ({ close }: any) => {
             </div>
           )}
 
-          {showFilterOptions && 
+          {showFilterOptions && (
             // <div className="absolute top-0 left-0 w-full h-full bg-white bg-opacity-90">
             <div className="fixed top-[7%] left-[22%] w-full h-full flex items-center justify-center">
-              <FilterOptions close={() => setShowFilterOptions(false)}/>
+              <FilterOptions close={() => setShowFilterOptions(false)} />
             </div>
-}
+          )}
         </div>
       </div>
     </div>

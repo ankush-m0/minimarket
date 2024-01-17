@@ -1,7 +1,8 @@
 import React, { useState } from 'react';
 import Navbar from '@/components/Navbar';
 import Sidebar from '@/components/Sidebar';
-import MainPage from '@/components/MainPage';
+import MainPage from '@/components/MiniMarket';
+
 
 export default function Home() {
   const [showMainPage, setShowMainPage] = useState(false);
@@ -10,13 +11,9 @@ export default function Home() {
     setShowMainPage(true);
   };
 
-  return (
-    <main className='bg-white h-screen overflow-auto'>
-        <Navbar onShowMainPage={handleShowMainPage}/>
-        <div className='flex flex-row'>
-          <Sidebar/>
-          {showMainPage && <MainPage/>}
-        </div>
-    </main>
-  );
+  return  (
+    <div>
+          
+    </div>
+  )
 }
