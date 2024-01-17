@@ -18,7 +18,9 @@ import { getAccount, signMessage } from "@wagmi/core";
 import zeta from "../images/zeta.png";
 import zeta2 from "../images/zeta2.png";
 import { useRouter } from "next/router";
-const Navbar = () => {
+import MainPage from "./MainPage";
+
+const Navbar = ({ onShowMainPage }:any) => {
   const { chain } = useNetwork();
   const [loginCred, setLoginCred] = useState();
   const { chains, error, isLoading, pendingChainId, switchNetwork } =
@@ -119,27 +121,31 @@ const Navbar = () => {
     const signature = await signAccount();
     console.log("data", signature);
     try {
-      const response1 = await axios.post("http://localhost:8000/auth/login", {
+      const response = await axios.post("http://localhost:8000/auth/login", {
         walletAddress: address,
         signature: signature,
       });
-      const cookies = new Cookies();
-      // console.log("response1", response1);
-      cookies.set("access_token", response1.data.accessToken, { path: "/" });
-      cookies.set("refresh_token", response1.data.refreshToken, { path: "/" });
-      // localStorage.setItem('access_token', response1.data.accessToken);
-      // localStorage.setItem('refresh_token', response1.data.refreshToken);
-      // localStorage.setItem('login_id', response1.data._id);
-      setLoginCred(response1.data);
+      // Saving tokens in localStorage
+      localStorage.setItem("access_token", response.data.accessToken);
+      localStorage.setItem("refresh_token", response.data.refreshToken);
+      setLoginCred(response.data);
     } catch (error) {
-      // console.log(error);
+      console.error(error);
     }
   };
   const [connectText, setConnectText] = useState<string | null>(null);
   useEffect(() => {
     if (isConnected) {
       setConnectText(`${address}`);
-      handleLogin();
+      // Check if access_token is already present
+      const accessToken = localStorage.getItem("access_token");
+      if (!accessToken) {
+        handleLogin();
+      } else {
+        // Handle case if the token is already in localStorage
+        // e.g., set user login state based on token
+        // setLoginCred({ ... }); // Set appropriate login credentials
+      }
     } else {
       setConnectText("Connect Wallet");
     }
@@ -162,7 +168,7 @@ const Navbar = () => {
         <label className="pt-1">OTC LAYER</label>
       </div>
       <div className="flex flex-row border-l-2 border-black pl-12 py-4 w-[40%]">
-        <label className="pr-12 pt-1">Mini Market</label>
+        <label className="pr-12 pt-1 cursor-pointer" onClick={onShowMainPage}>Mini Market</label>
         <div className="flex flex-row">
           <Image src={zeta2} alt="abc" width={30} height={20} />
           <label className="pt-1 pl-1">Zeta Chain</label>
@@ -276,9 +282,7 @@ const Navbar = () => {
                           />
                         </div>
 
-                        <p className="">
-                          {item.label}
-                        </p>
+                        <p className="">{item.label}</p>
                       </div>
                       {chain?.id === item.id ? (
                         <p className="flex items-center">

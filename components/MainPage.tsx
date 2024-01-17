@@ -1,17 +1,43 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import cart from "../images/cart.png";
 import Image from "next/image";
 import NewProject from "./NewProject";
 import ProjectDetails from "./ProjectDetails";
 import GetApiKey from "./GetApiKey";
 import Integrate from "./Integrate";
+import axios from "axios";
 
 const MainPage: React.FC = () => {
   const [showNewProject, setShowNewProject] = useState(false);
   const [showProjectDetails, setShowProjectDetails] = useState(false);
   const [showAPIKey, setShowAPIKey] = useState(false);
   const [showIntegrate, setShowIntegrate] = useState(false);
-  const projects: any = [];
+  const [projects, setProjects] = useState([]);
+
+
+  const handleShowProjects = async () => {
+    try {
+      const accessToken = localStorage.getItem('access_token');
+      console.log("access-token:",accessToken)
+      const response = await axios.get(
+        "http://localhost:8000/minimarket/v1/fetch-all-projects",
+        {
+          headers: {
+            Authorization: `Bearer ${accessToken}`,
+          },
+        }
+      );
+      console.log(response.data);
+      setProjects(response.data.projects);
+    } catch (error) {
+      console.error("Error fetching projects", error);
+    }
+  };
+
+  useEffect(() => {
+    handleShowProjects();
+  }, []);
+
 
   return (
     <div className="relative font-mono w-[70%] pl-[5%] py-[50px]">
@@ -78,12 +104,34 @@ const MainPage: React.FC = () => {
               </tr>
             </thead>
             <tbody className="bg-white divide-y divide-black">
-              {/* {projects.length === 0 ? (
-                      <p className="text-gray-500 px-6">
-                        You don&#39;t have any projects yet.
-                      </p>
-                    ) : ( */}
+            {projects.length === 0 ? (
               <tr>
+                <td colSpan={3} className="text-center text-gray-500 px-6">
+                  You don&#39;t have any projects yet.
+                </td>
+              </tr>
+            ) : (
+              projects.map((project, index) => (
+                <tr key={index}>
+                  <td className="pr-14 pl-6 py-4 whitespace-nowrap text-sm text-black">
+                    {project} {/* Update accordingly based on your project object structure */}
+                  </td>
+                  <td className="px-6 py-4 whitespace-nowrap text-sm text-black">
+                    {project} {/* Update accordingly */}
+                  </td>
+                  <td className="px-6 py-4 whitespace-nowrap text-sm text-black">
+                    <button
+                      className="border-2 border-black p-2 shadow-[rgba(0,0,0,1)_3px_3px_0px_1px]"
+                      onClick={() => setShowAPIKey(true)}
+                    >
+                      Get Key
+                    </button>
+                    {/* ... [rest of your buttons] */}
+                  </td>
+                </tr>
+              ))
+            )}
+              {/* <tr>
                 <td className="pr-14 pl-6 py-4 whitespace-nowrap text-sm text-black">
                   Project 1
                 </td>
@@ -116,8 +164,7 @@ const MainPage: React.FC = () => {
                     Details
                   </button>
                 </td>
-              </tr>
-              {/* )} */}
+              </tr> */}
             </tbody>
           </table>
         </div>
