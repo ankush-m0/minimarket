@@ -11,19 +11,11 @@ import FilterOptions from '@/components/FilterOptions'
 
 const inter = Inter({ subsets: ['latin'] })
 
+
 export default function Home() {
   return (
-    <main className='bg-white h-screen overflow-auto'>
-        <Navbar/>
-        <div className='flex flex-row'>
-          <Sidebar/>
+    <>
           <MainPage/>
-          {/* <ProjectDetails/> */}
-          {/* <DeleteProject/> */}
-          {/* <GetApiKey/> */}
-          {/* <Integrate/> */}
-          {/* <FilterOptions/> */}
-        </div>
-    </main>
+    </>
   )
 }

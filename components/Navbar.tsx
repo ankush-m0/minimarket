@@ -1,8 +1,9 @@
 import Image from "next/image";
 import axios from "axios";
-import React, { useEffect, useState } from "react";
+import React, { Dispatch, SetStateAction, useEffect, useState } from "react";
 import { RxDotFilled } from "react-icons/rx";
 import { useWeb3Modal } from "@web3modal/react";
+import { HiMenu } from "react-icons/hi";
 import {
   useAccount,
   useConnect,
@@ -15,10 +16,18 @@ import CustomModal from "./modal/modal";
 import { InjectedConnector } from "wagmi/connectors/injected";
 import Cookies from "universal-cookie";
 import { getAccount, signMessage } from "@wagmi/core";
-import zeta from "../images/zeta.png";
 import zeta2 from "../images/zeta2.png";
 import { useRouter } from "next/router";
-const Navbar = () => {
+import Logo from "./logo/Logo";
+import { IoClose } from "react-icons/io5";
+
+const Navbar = ({
+  sideBar,
+  showSidebar,
+}: {
+  sideBar: boolean;
+  showSidebar: Dispatch<SetStateAction<boolean>>;
+}) => {
   const { chain } = useNetwork();
   const [loginCred, setLoginCred] = useState();
   const { chains, error, isLoading, pendingChainId, switchNetwork } =
@@ -150,30 +159,24 @@ const Navbar = () => {
   console.log("loginCred", loginCred);
 
   return (
-    <div className="flex flex-row justify-between text-black border-b-2 border-black font-mono">
-      <div className="flex flex-row border-r-2 border-black w-[15%] py-4">
-        <Image
-          src={zeta}
-          alt="abc"
-          width={30}
-          height={30}
-          className="ml-10 mr-8"
-        />
-        <label className="pt-1">OTC LAYER</label>
+    <div className="flex flex-row items-center px-8 border-b-2 border-black font-mono">
+      <div className="block md:hidden">
+        <Logo />
       </div>
-      <div className="flex flex-row border-l-2 border-black pl-12 py-4 w-[40%]">
-        <label className="pr-12 pt-1">Mini Market</label>
-        <div className="flex flex-row">
+      <div className="flex flex-row ml-auto items-center gap-2 xs:gap-4 md:gap-5 md:pl-12 py-[1.02rem]">
+        <label className="hidden md:flex">Mini Market</label>
+        <div className="hidden md:flex flex-row items-center ">
           <Image src={zeta2} alt="abc" width={30} height={20} />
-          <label className="pt-1 pl-1">Zeta Chain</label>
+          <label className="pl-1">Zeta Chain</label>
         </div>
         <button
+        type="button"
           onClick={openModal}
-          className={`ml-2 px-2 bg-white/10 rounded-md bg-red-500 ${
+          className={` bg-white/10 rounded-md bg-red-500 ${
             selectedNetwork.src ? "bg-[#ffffff]" : "bg-white/10"
           }`}
         >
-          <div className="flex">
+          <div className="flex items-center">
             {selectedNetwork.src && (
               <div className="min-w-fit">
                 <Image
@@ -182,15 +185,20 @@ const Navbar = () => {
                   width="0"
                   height="0"
                   sizes="100vw"
-                  className="mr-2 w-6 "
+                  className="w-5 xs:w-6 mr-2"
                 />
               </div>
             )}
-
-            <p className="text-md">{selectedNetwork.label}</p>
+            <p className="hidden xs-m:flex xs-m:w-full flex-none overflow-hidden text-base">
+              {selectedNetwork.label}
+            </p>
+            <p className="flex xs-m:hidden flex-none overflow-hidden text-base">
+              {selectedNetwork.label.split(" ")[0]}
+            </p>
           </div>
         </button>
         <button
+        type="button"
           className=""
           // onClick={() => {
           //   isConnected ? disconnect() : connect();
@@ -202,8 +210,8 @@ const Navbar = () => {
           onClick={() => open()}
         >
           {isConnected ? (
-            <p className="ml-2 w-[8rem] text-ellipsis overflow-hidden ...">
-              {address}
+            <p className="w-14 text-ellipsis xs-m:w-full overflow-hidden uppercase">
+              {address && address.slice(0, 5) + "..." + address.slice(-3)}
             </p>
           ) : (
             <p className="">Connect Wallet</p>
@@ -215,7 +223,7 @@ const Navbar = () => {
           isOpen={isModalOpen}
           onRequestClose={closeModal}
         >
-          <div className="px-4 pb-8  ">
+          <div className="px-4 pb-8">
             <ul className="">
               {/* {network?.map((item, index) => (
               <li
@@ -276,9 +284,7 @@ const Navbar = () => {
                           />
                         </div>
 
-                        <p className="">
-                          {item.label}
-                        </p>
+                        <p className="">{item.label}</p>
                       </div>
                       {chain?.id === item.id ? (
                         <p className="flex items-center">
@@ -301,6 +307,12 @@ const Navbar = () => {
             </ul>
           </div>
         </CustomModal>
+      </div>
+      <div
+        className="ml-2 xs:ml-3 sm:ml-4 text-2xl rounded-sm md:hidden cursor-pointer transition-all delay-200"
+        onClick={() => showSidebar((prev) => !prev)}
+      >
+        {sideBar ? <IoClose /> : <HiMenu />}
       </div>
     </div>
   );

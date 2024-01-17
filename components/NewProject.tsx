@@ -1,19 +1,12 @@
 import React from "react";
 import Image from "next/image";
 import closeIcon from "../images/closeIcon.png";
+import CloseButton from "./buttons/CloseButton";
 
 const NewProject = ({ close }: any) => {
   return (
-    <div className="flex flex-col w-[30%] border-2 border-black p-8 h-[fit-content] font-mono shadow-[rgba(0,0,0,1)_5px_5px_0px_1px] bg-white">
-      <button className="text-black place-self-end mb-4" onClick={close}>
-        <Image
-          width="40"
-          height="40"
-          src={closeIcon}
-          alt="cancel"
-          className="rounded-full border border-black shadow-[rgba(0,0,0,1)_1px_1px_0px_1px]"
-        />
-      </button>
+    <div className="flex flex-col w-4/5 sm:w-4/6 md:w-5/12 xl:w-[30%] border-2 border-black p-8 h-fit font-mono shadow-btn-6 bg-white">
+       <CloseButton close={close}/>
 
       <div className="flex flex-col border-2 border-black mb-6 p-2">
         <label className="text-black p-2">Name</label>
