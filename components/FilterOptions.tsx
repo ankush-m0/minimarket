@@ -22,7 +22,7 @@ const FilterOptions = ({ close }: any) => {
       <label className="text-sm mb-6">Select Price Range</label>
       <hr />
       <input
-        className="border-2 border-gray-300 bg-white h-10 px-5 mt-6 mb-6 pr-16 rounded-lg text-sm focus:outline-none mt-4"
+        className="border-2 border-gray-300 bg-white h-10 px-5 mb-6 pr-16 rounded-lg text-sm focus:outline-none mt-4"
         type="search"
         name="search"
         placeholder="🔍Search"
