@@ -8,9 +8,9 @@ const ProjectDetails = ({ close }: any) => {
   const [showDeleteProject, setShowDeleteProject] = useState(false);
 
   return (
-    <div className="flex flex-col w-[60%] border-2 border-black p-8 h-[fit-content] font-mono shadow-[rgba(0,0,0,1)_5px_5px_0px_1px] bg-white">
+    <div className="flex flex-col mx-auto py-5 px-3  sm:p-8 h-full md:h-fit text-black ">
       <div className="flex flex-row justify-between mb-4 items-center">
-        <h1 className="text-black text-2xl ">Project Details</h1>
+        <h1 className="text-xl font-semibold md:text-2xl ">Project Details</h1>
         <CloseButton close={close}/>
       </div>
 

@@ -4,7 +4,7 @@ import closeIcon from "@/images/closeIcon.png";
 
 export default function CloseButton({ close }: {close: () => void}) {
   return (
-    <button type="button" className="text-black place-self-end mb-4" onClick={close}>
+    <button type="button" className="text-black place-self-end mb-4 sticky top-8" onClick={close}>
         <Image
           width="40"
           height="40"

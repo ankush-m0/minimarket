@@ -5,6 +5,7 @@ import FilterOptions from "./FilterOptions";
 import Image from "next/image";
 import closeIcon from "../images/closeIcon.png";
 import CloseButton from "./buttons/CloseButton";
+import PrimaryBtnComponent from "./buttons/PrimaryButton";
 
 const Integrate = ({ close }: { close: () => void }) => {
   const [showOrderDetails, setShowOrderDetails] = useState(false);
@@ -28,19 +29,19 @@ const Integrate = ({ close }: { close: () => void }) => {
   };
 
   return (
-    <div className="flex flex-col mx-auto border-2 border-black p-8 h-fit text-black font-mono shadow-btn-6 bg-white">
+    <div className="flex flex-col mx-auto py-5 px-3  sm:p-8 h-full md:h-fit text-black ">
       <CloseButton close={close} />
-      <div className="grid gap-10 md:grid-cols-2 ">
+      <div className="grid grid-cols-1 max-h-[500px] md:max-h-fit md:h-full overflow-auto scroll-smooth  p-3 rounded-xl md:gap-10 md:grid-cols-2 ">
         <div className="grid grid-rows-2 gap-10">
           <div className="w-full flex flex-col flex-wrap gap-3 ">
-            <label>Step 1</label>
+            <label className="font-semibold">Step 1</label>
             <p className="text-gray-500 text-sm sm:text-base">
               Enter your Token Address and Preferred Markup Language.
             </p>
-            <div className="grid grid-cols-1 w-full flex-wrap gap-5 xs-m:grid-cols-2 ">
+            <div className="grid grid-cols-1 shrink w-full flex-wrap  min-w-[200px] gap-5 lg:grid-cols-2 ">
               <input
                 placeholder="Enter Token Address"
-                className="text-sm border-2 border-black p-2 w-full"
+                className="text-sm border-2 border-black p-2 w-full shrink"
               />
               <select defaultValue={""} className="border-2 border-black text-sm p-2 w-full">
                 <option value={""}>Select Markup Language</option>
@@ -49,17 +50,15 @@ const Integrate = ({ close }: { close: () => void }) => {
             </div>
           </div>
           <div className="flex flex-col gap-3">
-            <label>Step 2</label>
+            <label className="font-semibold">Step 2</label>
             <p className="text-gray-500 text-sm sm:text-base">
               Copy the code and paste it in your Website.
             </p>
-            <button className="w-[40%] text-black border-2 border-black bg-red-500 shadow-[rgba(0,0,0,1)_5px_5px_0px_1px] py-2">
-              Copy Code
-            </button>
+            <PrimaryBtnComponent type="button" text={"Copy Code"} variant="filled" className="w-fit" />
           </div>
         </div>
 
-        <div className="flex flex-col border-2 border-black rounded-xl p-8 ">
+        <div className="flex flex-col border-2 border-black rounded-xl p-4 sm:p-8 ">
           <div className="flex flex-row justify-between mb-4">
             <div className="flex flex-row">
               <Image
